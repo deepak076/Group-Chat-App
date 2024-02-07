@@ -15,7 +15,15 @@ function submitForm(){
     })
     .then(response => response.json())
     .then(data => {
-        console.log('Response from backend: ', data);
+        if (data.success) {
+            alert('Successfully signed up!');
+        } else {
+            if (data.message.includes('User already exists')) {
+                alert('User already exists, Please Login');
+            } else {
+                console.error('Signup failed:', data.message);
+            }
+        }
     })
     .catch(error => console.error('Error:', error));
 }
