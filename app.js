@@ -2,8 +2,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors'); 
+const path = require('path');
 const sequelize = require('./util/db');
 const userRoutes = require('./routes/userRoutes');
+require('dotenv').config();
 
 const app = express();
 const port = 3000;
@@ -20,7 +22,7 @@ sequelize.sync({ force: false })
 
 app.use(bodyParser.json());
 
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/user', userRoutes);
 

@@ -1,3 +1,4 @@
+<!-- Public\signup\index.html -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -19,17 +20,15 @@
             <input type="email" name="email" id="email" required>
 
             <label for="phone">Phone Number:</label>
-            <input type="tel" name="phone" id="phone" required>
+            <input type="text" id="phone" name="phone" placeholder="Phone" pattern="\d*" required>
 
             <label for="password">Password:</label>
             <input type="password" name="password" id="password" required>
 
             <button type="button" onclick="submitForm()">Sign Up</button>
         </form>
-        <p>Already have an account? <a href="login.html">Log in</a></p>
+        <p>Already have an account? <a href="login.html">Login</a></p>
     </div>
-
-
 
     <script src="signUp.js"></script>
 </body>

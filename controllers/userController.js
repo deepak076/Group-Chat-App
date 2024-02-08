@@ -8,7 +8,6 @@ exports.signup = async (req, res) => {
     const { name, email, phone, password } = req.body;
 
     try {
-        // Check if the user already exists by email or phone
         const existingUser = await User.findOne({
             where: {
                 [Op.or]: [{ email }, { phone }],
@@ -19,13 +18,10 @@ exports.signup = async (req, res) => {
             return res.status(409).json({ success: false, message: 'User already exists' });
         }
 
-        // Hash the password
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        // Create a new user in the database with the hashed password
         const newUser = await User.create({ name, email, phone, password: hashedPassword });
 
-        // Respond with success
         res.json({ success: true, message: 'User signed up successfully', user: newUser });
     } catch (error) {
         console.error('Error creating user:', error);
@@ -43,10 +39,10 @@ exports.login = async (req, res) => {
         // Check if the user exists and the password is correct
         if (user && bcrypt.compareSync(password, user.password)) {
             // Create a JWT with user ID encrypted
-            const token = jwt.sign({ userId: user.id }, 'secret-key', { expiresIn: '1h' });
+            const token = jwt.sign({ userId: user.id }, process.env.TOKEN_SECRET, { expiresIn: '1h' });
 
             // Respond with success, the token, and any other necessary user information
-            res.json({ success: true, message: 'Login successful', token, user: { id: user.id, email: user.email } });
+            res.json({ success: true, message: 'Login successful', token, user: { id: user.id, email: user.email, name: user.name } });
         } else if (!user) {
             res.status(404).json({ success: false, message: 'User not found' });
         } else {
@@ -54,6 +50,36 @@ exports.login = async (req, res) => {
         }
     } catch (error) {
         console.error('Error during login:', error);
+        res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+};
+
+
+exports.getUserDetails = async (req, res) => {
+    try {
+        // User details are available in req.user (set by the authentication middleware)
+        const user = req.user;
+
+        // Respond with the user details
+        res.json({ success: true, user });
+    } catch (error) {
+        console.error('Error fetching user details:', error);
+        res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+};
+
+exports.getAllUsers = async (req, res) => {
+    try {
+        // Fetch all users from the database
+        const allUsers = await User.findAll({ attributes: ['id', 'name'] });
+
+        // Map the data to send an array of users
+        const usersArray = allUsers.map(user => ({ id: user.id, name: user.name }));
+
+        // Respond with the list of users
+        res.json({ success: true, users: usersArray });
+    } catch (error) {
+        console.error('Error fetching all users:', error);
         res.status(500).json({ success: false, message: 'Internal server error' });
     }
 };
