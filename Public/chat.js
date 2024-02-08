@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const joinMessage = document.getElementById('join-message');
     const chatHistory = document.getElementById('chat-history');
     const messageInput = document.getElementById('message-input');
     const sendButton = document.getElementById('send-button');
@@ -21,56 +20,89 @@ document.addEventListener('DOMContentLoaded', () => {
         chatHistory.appendChild(messageElement);
     }
 
-    fetch('http://localhost:3000/user/details', {
-        method: 'GET',
-        headers: {
-            'Authorization': token,
-        },
-    })
-        .then(response => response.json())
-        .then(userData => {
-            username = userData.user.name;
-            if (!joinedUsers.has(username)) {
-                // Display join message only if the user hasn't joined before
-                displayMessage(username, 'joins the chat');
-                joinedUsers.add(username);
-            }
-
-            // Event listener for the send button
-            sendButton.addEventListener('click', () => {
-                const userMessage = messageInput.value;
-                if (userMessage.trim() !== '') {
-                    // Simulating sending a message
-                    displayMessage(username, userMessage);
-                    messageInput.value = ''; // Clear the input field
-                }
-            });
+    function joinChat() {
+        fetch('http://localhost:3000/user/details', {
+            method: 'GET',
+            headers: {
+                'Authorization': token,
+            },
         })
-        .catch(error => {
-            console.error('Error fetching user details:', error);
-        });
+            .then(response => response.json())
+            .then(userData => {
+                username = userData.user.name;
+                if (!joinedUsers.has(username)) {
+                    // Display join message only if the user hasn't joined before
+                    displayMessage(username, 'joins the chat');
+                    joinedUsers.add(username);
+                }
 
-    fetch('http://localhost:3000/user/all', {
-        method: 'GET',
-        headers: {
-            'Authorization': token,
-        },
-    })
-        .then(response => response.json())
-        .then(usersData => {
-            console.log('Users Data:', usersData);
-
-            if (usersData.success && Array.isArray(usersData.users)) {
-                usersData.users.forEach(user => {
-                    if (!joinedUsers.has(user.name)) {
-                        // Display join message only if the user hasn't joined before
-                        displayMessage(user.name, 'has joined the chat');
-                        joinedUsers.add(user.name);
+                // Event listener for the send button
+                sendButton.addEventListener('click', () => {
+                    const userMessage = messageInput.value.trim();
+                    if (userMessage !== '') {
+                        // Simulating sending a message
+                        displayMessage(username, userMessage);
+                        // Call the backend API to send the message
+                        sendMessageToServer(username, userMessage);
+                        messageInput.value = ''; // Clear the input field
                     }
                 });
-            } else {
-                console.error('Invalid response format for fetching all users:', usersData);
-            }
+            })
+            .catch(error => {
+                console.error('Error fetching user details:', error);
+            });
+    }
+
+    function sendMessageToServer(email, message) {
+        console.log('Sending message with email:', email);
+        fetch('http://localhost:3000/chat/send-message', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': token,
+            },
+            body: JSON.stringify({ userId: email, message }),
         })
-        .catch(error => console.error('Error fetching all users:', error));
+            .then(response => response.json())
+            .then(data => {
+                console.log('Response from server:', data);
+                if (data.success) {
+                    console.log('Message sent successfully:', data.message);
+                } else {
+                    console.error('Failed to send message:', data.message);
+                }
+            })
+            .catch(error => console.error('Error sending message:', error));
+    }
+
+
+    function fetchAllUsers() {
+        fetch('http://localhost:3000/user/all', {
+            method: 'GET',
+            headers: {
+                'Authorization': token,
+            },
+        })
+            .then(response => response.json())
+            .then(usersData => {
+                // console.log('Users Data:', usersData);
+
+                if (usersData.success && Array.isArray(usersData.users)) {
+                    usersData.users.forEach(user => {
+                        if (!joinedUsers.has(user.name)) {
+                            // Display join message only if the user hasn't joined before
+                            displayMessage(user.name, 'has joined the chat');
+                            joinedUsers.add(user.name);
+                        }
+                    });
+                } else {
+                    console.error('Invalid response format for fetching all users:', usersData);
+                }
+            })
+            .catch(error => console.error('Error fetching all users:', error));
+    }
+
+    // Call functions to join the chat and fetch all users
+    joinChat();
+    fetchAllUsers();
 });

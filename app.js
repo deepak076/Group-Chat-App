@@ -5,6 +5,7 @@ const cors = require('cors');
 const path = require('path');
 const sequelize = require('./util/db');
 const userRoutes = require('./routes/userRoutes');
+const chatRoutes = require('./routes/chatRoutes');
 require('dotenv').config();
 
 const app = express();
@@ -25,6 +26,7 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/user', userRoutes);
+app.use('/chat', chatRoutes);
 
 app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
