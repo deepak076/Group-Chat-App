@@ -27,3 +27,13 @@ exports.sendMessage = async (req, res) => {
         res.status(500).json({ success: false, message: 'Error storing message' });
     }
 };
+
+exports.getAllMessages = async (req, res) => {
+    try {
+        const messages = await ChatMessage.findAll();
+        res.status(200).json({ success: true, messages });
+    } catch (error) {
+        console.error('Error fetching messages:', error);
+        res.status(500).json({ success: false, message: 'Internal Server Error' });
+    }
+};

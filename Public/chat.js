@@ -20,6 +20,26 @@ document.addEventListener('DOMContentLoaded', () => {
         chatHistory.appendChild(messageElement);
     }
 
+    function fetchAllMessages() {
+        fetch('http://localhost:3000/chat/get-messages', {
+            method: 'GET',
+            headers: {
+                'Authorization': token,
+            },
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    data.messages.forEach(message => {
+                        displayMessage(message.userId, message.message);
+                    });
+                } else {
+                    console.error('Error fetching messages:', data.message);
+                }
+            })
+            .catch(error => console.error('Error fetching messages:', error));
+    }
+
     function joinChat() {
         fetch('http://localhost:3000/user/details', {
             method: 'GET',
@@ -103,6 +123,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Call functions to join the chat and fetch all users
+    fetchAllMessages();
     joinChat();
     fetchAllUsers();
+
+
 });
