@@ -31,7 +31,8 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(data => {
                 if (data.success) {
                     data.messages.forEach(message => {
-                        displayMessage(message.userName, message.message);
+                        displayMessage(message.User.name, message.message);
+                        console.log(message);
                     });
                 } else {
                     console.error('Error fetching messages:', data.message);
@@ -121,12 +122,9 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             .catch(error => console.error('Error fetching all users:', error));
     }
-
-    // Call functions to join the chat and fetch all users
     
-    joinChat();
+    // Call functions to join the chat and fetch all users
     fetchAllUsers();
+    joinChat();
     fetchAllMessages();
-
-
 });

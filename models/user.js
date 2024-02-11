@@ -23,6 +23,7 @@ const User = sequelize.define('User', {
     },
 });
 
-User.hasMany(ChatMessage, { foreignKey: 'userId' });
-
+// User.hasMany(ChatMessage, { foreignKey: 'userId'});
+User.hasMany(ChatMessage);
+ChatMessage.belongsTo(User);
 module.exports = User;

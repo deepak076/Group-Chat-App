@@ -10,8 +10,7 @@ exports.sendMessage = async (req, res) => {
         console.log("entering try");
         // Find the user by username to get the user's ID
         const user = await User.findOne({ where: { name: userName } });
-        console.log('User found:', user);
-        if (!user) {
+                if (!user) {
             return res.status(404).json({ success: false, message: 'User not found' });
         }
 
@@ -30,7 +29,7 @@ exports.sendMessage = async (req, res) => {
 
 exports.getAllMessages = async (req, res) => {
     try {
-        const messages = await ChatMessage.findAll();
+        const messages = await ChatMessage.findAll({ include: User });
         res.status(200).json({ success: true, messages });
     } catch (error) {
         console.error('Error fetching messages:', error);
