@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(data => {
                 if (data.success) {
                     data.messages.forEach(message => {
-                        displayMessage(message.userId, message.message);
+                        displayMessage(message.userName, message.message);
                     });
                 } else {
                     console.error('Error fetching messages:', data.message);
@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 'Content-Type': 'application/json',
                 'Authorization': token,
             },
-            body: JSON.stringify({ userId: email, message }),
+            body: JSON.stringify({ userName: email, message }),
         })
             .then(response => response.json())
             .then(data => {
@@ -123,9 +123,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Call functions to join the chat and fetch all users
-    fetchAllMessages();
+    
     joinChat();
     fetchAllUsers();
+    fetchAllMessages();
 
 
 });

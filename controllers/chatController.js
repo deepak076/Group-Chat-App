@@ -4,12 +4,12 @@ const { User, ChatMessage } = models;
 
 exports.sendMessage = async (req, res) => {
     console.log("entering sendMessage");
-    const { userId, message } = req.body;
-    console.log('Received userId:', userId);
+    const { userName, message } = req.body;
+    console.log('Received request body:', req.body);
     try {
         console.log("entering try");
-        // Find the user by email to get the user's ID
-        const user = await User.findOne({ where: { email: userId } });
+        // Find the user by username to get the user's ID
+        const user = await User.findOne({ where: { name: userName } });
         console.log('User found:', user);
         if (!user) {
             return res.status(404).json({ success: false, message: 'User not found' });
