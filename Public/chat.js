@@ -2,6 +2,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatHistory = document.getElementById('chat-history');
     const messageInput = document.getElementById('message-input');
     const sendButton = document.getElementById('send-button');
+    const joinMessage = document.getElementById('join-message');
+
 
     // Get JWT token from local storage
     const token = localStorage.getItem('jwt');
@@ -13,10 +15,14 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('JWT token not found.');
         return;
     }
-
-    function displayMessage(userName, message) {
+    function displayUser(userName, message) {
         const messageElement = document.createElement('div');
         messageElement.innerHTML = `<strong>${userName}:</strong> ${message}`;
+        joinMessage.appendChild(messageElement);
+    }
+    function displayMessage(userName, message) {
+        const messageElement = document.createElement('div');
+        messageElement.innerHTML = `<strong>${userName}: ${message}`;
         chatHistory.appendChild(messageElement);
     }
 
@@ -58,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 username = userData.user.name;
                 if (!joinedUsers.has(username)) {
                     // Display join message only if the user hasn't joined before
-                    displayMessage(username, 'joins the chat');
+                    displayUser(username, 'joins the chat');
                     joinedUsers.add(username);
                 }
 
@@ -66,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const userMessage = messageInput.value.trim();
                     if (userMessage !== '') {
                         // Simulating sending a message
-                        displayMessage(username, userMessage);
+                        displayUser(username, userMessage);
                         // Call the backend API to send the message
                         sendMessageToServer(username, userMessage);
                         messageInput.value = ''; // Clear the input field
@@ -113,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (usersData.success && Array.isArray(usersData.users)) {
                     usersData.users.forEach(user => {
                         if (!joinedUsers.has(user.name)) {
-                            displayMessage(user.name, 'has joined the chat');
+                            displayUser(user.name, 'has joined the chat');
                             joinedUsers.add(user.name);
                         }
                     });
@@ -123,11 +129,13 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             .catch(error => console.error('Error fetching all users:', error));
     }
+   
 
-    fetchAllUsers();
-    joinChat();
-    fetchAllMessages();
+    setInterval(() => {
+        fetchAllUsers();
+        joinChat();
+        fetchAllMessages();
+    }, 1000);
 
-    setInterval(fetchAllMessages, 1000);
 
 });
