@@ -20,6 +20,11 @@ document.addEventListener('DOMContentLoaded', () => {
         chatHistory.appendChild(messageElement);
     }
 
+    function clearChatHistory() {
+        // Clear existing chat history
+        chatHistory.innerHTML = '';
+    }
+
     function fetchAllMessages() {
         fetch('http://localhost:3000/chat/get-messages', {
             method: 'GET',
@@ -30,9 +35,9 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
+                    clearChatHistory();
                     data.messages.forEach(message => {
                         displayMessage(message.User.name, message.message);
-                        console.log(message);
                     });
                 } else {
                     console.error('Error fetching messages:', data.message);
@@ -57,7 +62,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     joinedUsers.add(username);
                 }
 
-                // Event listener for the send button
                 sendButton.addEventListener('click', () => {
                     const userMessage = messageInput.value.trim();
                     if (userMessage !== '') {
@@ -106,12 +110,9 @@ document.addEventListener('DOMContentLoaded', () => {
         })
             .then(response => response.json())
             .then(usersData => {
-                // console.log('Users Data:', usersData);
-
                 if (usersData.success && Array.isArray(usersData.users)) {
                     usersData.users.forEach(user => {
                         if (!joinedUsers.has(user.name)) {
-                            // Display join message only if the user hasn't joined before
                             displayMessage(user.name, 'has joined the chat');
                             joinedUsers.add(user.name);
                         }
@@ -122,9 +123,11 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             .catch(error => console.error('Error fetching all users:', error));
     }
-    
-    // Call functions to join the chat and fetch all users
+
     fetchAllUsers();
     joinChat();
     fetchAllMessages();
+
+    setInterval(fetchAllMessages, 1000);
+
 });
