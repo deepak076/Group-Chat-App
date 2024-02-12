@@ -1,25 +1,25 @@
+// Public\chat.js
 document.addEventListener('DOMContentLoaded', () => {
     const chatHistory = document.getElementById('chat-history');
     const messageInput = document.getElementById('message-input');
     const sendButton = document.getElementById('send-button');
     const joinMessage = document.getElementById('join-message');
 
-
-    // Get JWT token from local storage
     const token = localStorage.getItem('jwt');
     let username;
-    const joinedUsers = new Set(); // Keep track of joined users
+    const joinedUsers = new Set(); 
 
     if (!token) {
-        // Handle the case where the JWT token is not available
         console.error('JWT token not found.');
         return;
     }
+
     function displayUser(userName, message) {
         const messageElement = document.createElement('div');
         messageElement.innerHTML = `<strong>${userName}:</strong> ${message}`;
         joinMessage.appendChild(messageElement);
     }
+
     function displayMessage(userName, message) {
         const messageElement = document.createElement('div');
         messageElement.innerHTML = `<strong>${userName}: ${message}`;
@@ -27,11 +27,36 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function clearChatHistory() {
-        // Clear existing chat history
         chatHistory.innerHTML = '';
     }
 
+    function saveMessageToLocalStorage(message) {
+        let messages = JSON.parse(localStorage.getItem('chatMessages')) || [];
+        message.timestamp = new Date().toISOString();
+        messages.push(message);
+
+        // Limit the stored messages to the most recent 10 chats
+        if (messages.length > 10) {
+            messages.shift(); // Remove the oldest message
+        }
+
+        localStorage.setItem('chatMessages', JSON.stringify(messages));
+    }
+
+    function fetchMessagesFromLocalStorage() {
+        return JSON.parse(localStorage.getItem('chatMessages')) || [];
+    }
+
     function fetchAllMessages() {
+        // Fetch messages from local storage first
+        const localMessages = fetchMessagesFromLocalStorage();
+        console.log('Local Messages:', localMessages); // Log local messages
+        clearChatHistory();
+        localMessages.forEach((message) => {
+            displayMessage(message.User.name, message.message, message.timestamp);
+        });
+
+        // Fetch new messages from the backend
         fetch('http://localhost:3000/chat/get-messages', {
             method: 'GET',
             headers: {
@@ -40,10 +65,20 @@ document.addEventListener('DOMContentLoaded', () => {
         })
             .then(response => response.json())
             .then(data => {
+                console.log('Backend Messages:', data.messages); 
                 if (data.success) {
-                    clearChatHistory();
-                    data.messages.forEach(message => {
-                        displayMessage(message.User.name, message.message);
+                    // Filter out messages that are already displayed
+                    const newMessages = data.messages.filter((message) => {
+                        const isAlreadyDisplayed = localMessages.some((localMessage) => localMessage.createdAt === message.createdAt);
+                        return !isAlreadyDisplayed;
+                    });
+
+                    console.log('New Messages:', newMessages);
+
+                    // Display new messages in the correct order
+                    newMessages.forEach((message) => {
+                        displayMessage(message.User.name, message.message, message.createdAt);
+                        saveMessageToLocalStorage(message);
                     });
                 } else {
                     console.error('Error fetching messages:', data.message);
@@ -106,7 +141,6 @@ document.addEventListener('DOMContentLoaded', () => {
             .catch(error => console.error('Error sending message:', error));
     }
 
-
     function fetchAllUsers() {
         fetch('http://localhost:3000/user/all', {
             method: 'GET',
@@ -129,13 +163,11 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             .catch(error => console.error('Error fetching all users:', error));
     }
-   
 
     setInterval(() => {
         fetchAllUsers();
         joinChat();
         fetchAllMessages();
     }, 1000);
-
 
 });
