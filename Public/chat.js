@@ -5,13 +5,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const sendButton = document.getElementById('send-button');
     const joinMessage = document.getElementById('join-message');
 
-    // Get JWT token from local storage
     const token = localStorage.getItem('jwt');
     let username;
-    const joinedUsers = new Set(); // Keep track of joined users
+    const joinedUsers = new Set();
 
     if (!token) {
-        // Handle the case where the JWT token is not available
         console.error('JWT token not found.');
         return;
     }
@@ -28,22 +26,17 @@ document.addEventListener('DOMContentLoaded', () => {
         chatHistory.appendChild(messageElement);
     }
 
-    function clearChatHistory() {
-        // Clear existing chat history
-        chatHistory.innerHTML = '';
-    }
-
     sendButton.addEventListener('click', () => {
         const userMessage = messageInput.value.trim();
         if (userMessage !== '') {
             // Simulating sending a message
             displayMessage(username, userMessage);
-            // Call the backend API to send the message
             sendMessageToServer(username, userMessage);
-            messageInput.value = ''; // Clear the input field
+            messageInput.value = ''; 
         }
     });
 
+    
     function joinChat() {
         fetch('http://localhost:3000/user/details', {
             method: 'GET',
@@ -136,7 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('chats', JSON.stringify(limitedChats));
     }
 
-    let lastMessageTimestamp; // Declare lastMessageTimestamp
+    let lastMessageTimestamp; 
     let receivedMessageIds = new Set();
 
     function fetchAllMessages() {
@@ -152,7 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const newMessages = data.messages.filter(message => !receivedMessageIds.has(message.id));
 
                     if (newMessages.length > 0) {
-                        console.log('New Messages:', newMessages); // Log new messages
+                        console.log('New Messages:', newMessages); 
 
                         newMessages.forEach(message => {
                             // Check if the message ID is already in the set of received messages
@@ -187,9 +180,9 @@ document.addEventListener('DOMContentLoaded', () => {
         fetchAllMessages();
     }
 
-    fetchAllData(); // Call this once to fetch initial data
+    fetchAllData();
 
-    setInterval(() => {
-        fetchAllMessages();
-    }, 1000);
+    // setInterval(() => {
+    //     fetchAllMessages();
+    // }, 1000);
 });

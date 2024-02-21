@@ -1,18 +1,18 @@
-// models/chatMessage.js
+// models/group.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('../util/db');
 
-const ChatMessage = sequelize.define('ChatMessage', {
+const Group = sequelize.define('Group', {
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         allowNull: false,
         primaryKey: true,
     },
-    message: {
+    name: {
         type: DataTypes.STRING,
         allowNull: false,
     },
 });
 
-module.exports = ChatMessage;
+module.exports = Group;

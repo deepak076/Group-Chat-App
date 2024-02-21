@@ -1,6 +1,5 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../util/db');
-const ChatMessage = require('./chatMessage'); 
 
 const User = sequelize.define('User', {
     name: {
@@ -23,7 +22,4 @@ const User = sequelize.define('User', {
     },
 });
 
-// User.hasMany(ChatMessage, { foreignKey: 'userId'});
-User.hasMany(ChatMessage);
-ChatMessage.belongsTo(User);
 module.exports = User;
