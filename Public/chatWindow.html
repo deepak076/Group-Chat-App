@@ -9,29 +9,20 @@
 </head>
 
 <body>
-  <button id="create-group-button">Create Group</button>
 
-  <!-- Add a new div to display the list of groups -->
-  <div id="group-list"></div>
+  <div id="sidebar">
+    <button id="create-group-btn">Create Group</button>
+    <br>
+    <button id="common-chat-btn">Common Chat</button>
+  </div>
 
-  <div id="chat-container">
+  <div id="chat-container" class="hidden">
     <div id="join-message"></div>
     <div id="chat-history"></div>
+    <button id="close-chat-btn">Close Chat</button>
     <div id="input-container">
       <input type="text" id="message-input" placeholder="Type your message...">
       <button id="send-button">Send</button>
-    </div>
-  </div>
-
-  <div id="myModal" class="modal">
-    <div class="modal-content">
-      <span class="close">&times;</span>
-      <h2>Create Group</h2>
-      <label for="group-name">Group Name:</label>
-      <input type="text" id="group-name" required>
-      <h2>Select Users for the Group</h2>
-      <div id="user-list"></div>
-      <button id="create-group">Create Group</button>
     </div>
   </div>
 
