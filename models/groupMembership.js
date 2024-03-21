@@ -8,7 +8,15 @@ const GroupMembership = sequelize.define('GroupMembership', {
         autoIncrement: true,
         allowNull: false,
         primaryKey: true,
-    }
+    },
+    groupId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    },
+    userId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    },
 });
 
 module.exports = GroupMembership;

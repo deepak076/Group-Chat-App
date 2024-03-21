@@ -10,6 +10,7 @@ const Group = require('./models/group');
 const GroupMembership = require('./models/groupMembership');
 const userRoutes = require('./routes/userRoutes');
 const chatRoutes = require('./routes/chatRoutes');
+const groupRoutes = require('./routes/groupRoutes');
 require('dotenv').config();
 
 const app = express();
@@ -31,6 +32,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/user', userRoutes);
 app.use('/chat', chatRoutes);
+app.use('/group', groupRoutes);
 
 User.hasMany(ChatMessage);
 ChatMessage.belongsTo(User);

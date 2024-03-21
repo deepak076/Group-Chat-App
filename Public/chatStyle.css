@@ -51,3 +51,7 @@ body {
   top: 10px;
   right: 10px;
 }
+
+#create-group-form.hidden {
+  display: none;
+}

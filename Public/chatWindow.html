@@ -1,3 +1,4 @@
+<!-- Public\chatWindow.html -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -14,6 +15,24 @@
     <button id="create-group-btn">Create Group</button>
     <br>
     <button id="common-chat-btn">Common Chat</button>
+
+    <div id="user-groups">
+      <h3>My Groups</h3>
+      <ul id="group-list"></ul>
+    </div>
+  </div>
+
+  <div id="create-group-form" class="hidden">
+    <h2>Create Group</h2>
+    <form id="group-form">
+      <label for="group-name-input">Group Name:</label>
+      <input type="text" id="group-name-input" name="group-name-input">
+      <br>
+      <label for="members-input">Members (comma-separated):</label>
+      <input type="text" id="members-input" name="members-input">
+      <br>
+      <button type="submit">Create</button>
+    </form>
   </div>
 
   <div id="chat-container" class="hidden">
@@ -27,6 +46,7 @@
   </div>
 
   <script src="chat.js"></script>
+  <script src="group.js"></script>
 </body>
 
 </html>
