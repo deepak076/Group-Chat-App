@@ -10,13 +10,13 @@ exports.sendMessage = async (req, res) => {
         console.log("entering try");
         // Find the user by username to get the user's ID
         const user = await User.findOne({ where: { name: userName } });
-                if (!user) {
+        if (!user) {
             return res.status(404).json({ success: false, message: 'User not found' });
         }
-
+        console.log("userid line 16", user);
         const newMessage = await ChatMessage.create({
             userId: user.id, // Use the retrieved user's ID
-            message,
+            message
         });
         console.log("newMessage", newMessage);
 

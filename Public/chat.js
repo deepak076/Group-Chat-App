@@ -35,11 +35,12 @@ document.addEventListener('DOMContentLoaded', () => {
     function displayMessage(userName, message) {
         console.log('Displaying message:', userName, message);
         const messageElement = document.createElement('div');
-        messageElement.innerHTML = `<strong>${userName}: ${message}`;
+        messageElement.innerHTML = `<strong>${userName}: ${message}`;   
         chatHistory.appendChild(messageElement);
     }
 
     sendButton.addEventListener('click', () => {
+        console.log("send button add event listener");
         const userMessage = messageInput.value.trim();
         if (userMessage !== '') {
             // Simulating sending a message
@@ -60,17 +61,24 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(response => response.json())
             .then(userData => {
                 username = userData.user.name;
+                const userId = userData.user.id;
+    
+                // Save the user ID and username in local storage
+                localStorage.setItem('userId', userId);
+                localStorage.setItem('username', username);
+    
                 if (!joinedUsers.has(username)) {
                     // Display join message only if the user hasn't joined before
                     displayUserJoinMessage(username, 'joins the chat');
                     joinedUsers.add(username);
                 }
-
+    
             })
             .catch(error => {
                 console.error('Error fetching user details:', error);
             });
     }
+    
 
     function fetchAllUsers() {
         fetch('http://localhost:3000/user/all', {
@@ -146,6 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let receivedMessageIds = new Set();
 
     function fetchAllMessages() {
+        console.log("entering fetch all messages ");
         fetch(`http://localhost:3000/chat/get-messages`, {
             method: 'GET',
             headers: {

@@ -8,6 +8,7 @@ const User = require('./models/user');
 const ChatMessage = require('./models/chatMessage'); 
 const Group = require('./models/group');
 const GroupMembership = require('./models/groupMembership');
+const GroupMessage = require('./models/groupMessage');
 const userRoutes = require('./routes/userRoutes');
 const chatRoutes = require('./routes/chatRoutes');
 const groupRoutes = require('./routes/groupRoutes');
@@ -38,6 +39,8 @@ User.hasMany(ChatMessage);
 ChatMessage.belongsTo(User);
 User.belongsToMany(Group, { through: GroupMembership });
 Group.belongsToMany(User, { through: GroupMembership });
+GroupMessage.belongsTo(User, { foreignKey: 'userId' });
+GroupMessage.belongsTo(Group, { foreignKey: 'groupId' });
 
 app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);

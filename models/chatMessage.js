@@ -13,6 +13,14 @@ const ChatMessage = sequelize.define('ChatMessage', {
         type: DataTypes.STRING,
         allowNull: false,
     },
+    userId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: 'Users', // or 'users', depending on how Sequelize has named your table
+            key: 'id',
+        },
+    },
 });
 
 module.exports = ChatMessage;
