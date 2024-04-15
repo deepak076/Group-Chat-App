@@ -17,7 +17,7 @@ const ChatMessage = sequelize.define('ChatMessage', {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-            model: 'Users', // or 'users', depending on how Sequelize has named your table
+            model: 'Users', 
             key: 'id',
         },
     },

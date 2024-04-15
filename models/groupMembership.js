@@ -17,6 +17,11 @@ const GroupMembership = sequelize.define('GroupMembership', {
         type: DataTypes.INTEGER,
         allowNull: false,
     },
+    title: {
+        type: DataTypes.ENUM('admin', 'member'),
+        allowNull: false,
+        defaultValue: 'member', 
+    },
 });
 
 module.exports = GroupMembership;

@@ -24,13 +24,18 @@
     <div id="groupChat-container" class="hidden">
       <div id="group-chat-name">Group Name Here</div>
       <div id="groupChat-history"></div>
+      <button id="add-user-btn">Add User</button>
       <button id="close-groupChat-btn">Close Chat</button>
       <div id="group-input-container">
         <input type="text" id="group-message-input" placeholder="Type your message...">
         <button id="groupSend-button">Send</button>
       </div>
     </div>
-
+    <form id="add-user-form" class="hidden">
+      <label for="username-input">Enter Username:</label>
+      <input type="text" id="username-input" name="username-input">
+      <button type="submit">Add</button>
+    </form> 
   </div>
 
   <div id="create-group-form" class="hidden">
