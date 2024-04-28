@@ -90,6 +90,6 @@ body {
   right: 10px;
 }
 
-#add-user-form{
+.hidden {
   display: none;
 }

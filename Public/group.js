@@ -277,11 +277,66 @@ document.addEventListener('DOMContentLoaded', () => {
   // }, 1000);
 
 
+  const addUserBtn = document.getElementById('add-user-btn');
+  const addUserForm = document.getElementById('add-user-form');
+
+  addUserBtn.addEventListener('click', () => {
+    // Toggle visibility
+    addUserForm.classList.toggle('hidden');
+  });
+
+  // Handle the form submission
+  addUserForm.addEventListener('submit', (event) => {
+    event.preventDefault(); // Prevent the form from submitting traditionally
+    const username = document.getElementById('username-input').value;
+
+    // Assume a function to handle the API call for adding a user
+    addUser(username);
+  });
+
+  function addUser(username) {
+    console.log('Adding user:', username);
+    const groupId = getCurrentGroupId(); // Get the current group ID from the UI context or storage
+    if (!groupId) {
+      alert('No group selected');
+      return;
+    }
+
+    fetch(`http://localhost:3000/group/add-user/${groupId}`, { 
+    method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': token 
+      },
+      body: JSON.stringify({ username: username, groupId: groupId })
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok.');
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (data.success) {
+          console.log('User added successfully:', data);
+          alert('User added successfully!');
+          document.getElementById('username-input').value = ''; // Clear input after success
+          // refresh group members list or UI
+        } else {
+          throw new Error(data.message || 'Failed to add user');
+        }
+      })
+      .catch(error => {
+        console.error('Error adding user:', error);
+        alert('Error adding user: ' + error.message);
+      });
+  }
+
 });
 
 
 // Function to fetch user role from the server
-async function fetchUserRole(token,groupId) {
+async function fetchUserRole(token, groupId) {
   try {
     const response = await fetch(`http://localhost:3000/group/user-role/${groupId}`, {
       method: 'GET',
@@ -304,7 +359,7 @@ function displayGroupChatContainer(container, groupName) {
   // Find the group chat name element and set its content
   const groupNameElement = document.getElementById('group-chat-name');
   if (groupNameElement) {
-    groupNameElement.textContent = groupName; // Set the group name
+    groupNameElement.textContent = groupName;
   }
   container.classList.remove('hidden'); // Remove the 'hidden' class to display the group chat container
 }

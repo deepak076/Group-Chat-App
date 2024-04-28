@@ -25,44 +25,44 @@
       <div id="group-chat-name">Group Name Here</div>
       <div id="groupChat-history"></div>
       <button id="add-user-btn">Add User</button>
+      <form id="add-user-form" class="hidden">
+        <label for="username-input">Enter Username:</label>
+        <input type="text" id="username-input" name="username-input">
+        <button type="submit">Add</button>
+      </form>
       <button id="close-groupChat-btn">Close Chat</button>
       <div id="group-input-container">
         <input type="text" id="group-message-input" placeholder="Type your message...">
         <button id="groupSend-button">Send</button>
       </div>
     </div>
-    <form id="add-user-form" class="hidden">
-      <label for="username-input">Enter Username:</label>
-      <input type="text" id="username-input" name="username-input">
-      <button type="submit">Add</button>
-    </form> 
-  </div>
 
-  <div id="create-group-form" class="hidden">
-    <h2>Create Group</h2>
-    <form id="group-form">
-      <label for="group-name-input">Group Name:</label>
-      <input type="text" id="group-name-input" name="group-name-input">
-      <br>
-      <label for="members-input">Members (comma-separated):</label>
-      <input type="text" id="members-input" name="members-input">
-      <br>
-      <button type="submit">Create</button>
-    </form>
-  </div>
 
-  <div id="chat-container" class="hidden">
-    <div id="join-message"></div>
-    <div id="chat-history"></div>
-    <button id="close-chat-btn">Close Chat</button>
-    <div id="input-container">
-      <input type="text" id="message-input" placeholder="Type your message...">
-      <button id="send-button">Send</button>
+    <div id="create-group-form" class="hidden">
+      <h2>Create Group</h2>
+      <form id="group-form">
+        <label for="group-name-input">Group Name:</label>
+        <input type="text" id="group-name-input" name="group-name-input">
+        <br>
+        <label for="members-input">Members (comma-separated):</label>
+        <input type="text" id="members-input" name="members-input">
+        <br>
+        <button type="submit">Create</button>
+      </form>
     </div>
-  </div>
 
-  <script src="chat.js"></script>
-  <script src="group.js"></script>
+    <div id="chat-container" class="hidden">
+      <div id="join-message"></div>
+      <div id="chat-history"></div>
+      <button id="close-chat-btn">Close Chat</button>
+      <div id="input-container">
+        <input type="text" id="message-input" placeholder="Type your message...">
+        <button id="send-button">Send</button>
+      </div>
+    </div>
+
+    <script src="chat.js"></script>
+    <script src="group.js"></script>
 </body>
 
 </html>
