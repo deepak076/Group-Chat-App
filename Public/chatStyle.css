@@ -90,6 +90,14 @@ body {
   right: 10px;
 }
 
+#makeAdmin-btn {
+  display: none;
+  position: absolute;
+  bottom: 10px;
+  right: 85px;
+}
+
 .hidden {
   display: none;
 }
+
