@@ -1,5 +1,5 @@
 // Public\group.js
-  
+
 const token = localStorage.getItem('jwt');
 console.log("token", token);
 
@@ -37,7 +37,7 @@ function createGroup(groupName, members) {
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ userId: userId, groupName: groupName, members: members }) 
+    body: JSON.stringify({ userId: userId, groupName: groupName, members: members })
   })
     .then(response => response.json())
     .then(data => {
@@ -110,11 +110,12 @@ function fetchUserGroups(token) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+
   const groupList = document.getElementById('group-list');
   const sendButton = document.getElementById('groupSend-button');
   const messageInput = document.getElementById('group-message-input');
   const chatHistory = document.getElementById('groupChat-history');
-  
+
 
   groupList.addEventListener('click', async (event) => {
     const clickedListItem = event.target.closest('li'); // Find the closest <li> element
@@ -123,6 +124,14 @@ document.addEventListener('DOMContentLoaded', () => {
       console.log('Clicked:', clickedListItem.textContent.trim()); // Log the text content of the clicked <li>
 
       const groupId = clickedListItem.dataset.groupId; // Get the group ID from the data attribute
+      fetchUserRole(token, groupId)
+        .then(userRole => {
+          if (userRole === 'admin') {
+            // Show the "Add User" button
+            document.getElementById('add-user-btn').style.display = 'block';
+          }
+        })
+        .catch(error => console.error('Error fetching user role:', error));
       const groupName = clickedListItem.textContent.trim(); // Get the group name from the text content
       const groupChatContainer = document.getElementById('groupChat-container');
 
@@ -266,7 +275,30 @@ document.addEventListener('DOMContentLoaded', () => {
   // setInterval(() => {
   //     fetchAllMessages();
   // }, 1000);
+
+
 });
+
+
+// Function to fetch user role from the server
+async function fetchUserRole(token,groupId) {
+  try {
+    const response = await fetch(`http://localhost:3000/group/user-role/${groupId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': token,
+      },
+    });
+    if (!response.ok) {
+      throw new Error('Failed to fetch user role');
+    }
+    const data = await response.json();
+    return data.role;
+  } catch (error) {
+    throw error;
+  }
+}
 
 function displayGroupChatContainer(container, groupName) {
   // Find the group chat name element and set its content

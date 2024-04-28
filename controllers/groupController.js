@@ -4,8 +4,6 @@ const GroupMembership = require('../models/groupMembership');
 const User = require('../models/user');
 const GroupMessage = require('../models/groupMessage'); 
  
-
-// Controller to create a new group
 // Controller to create a new group
 exports.createGroup = async (req, res) => {
     try {
@@ -142,5 +140,29 @@ exports.getAllMessages = async (req, res) => {
     }
 };
 
+exports.getUserRole = async (req, res) => {
+    try {
+        const { groupId } = req.params;
+        const userId = req.user.id; // Assuming req.user is populated by the authentication middleware
+
+        // Fetch user's membership details from the group
+        const membership = await GroupMembership.findOne({
+            where: {
+                userId: userId,
+                groupId: groupId
+            }
+        });
+
+        if (!membership) {
+            return res.status(404).json({ success: false, message: 'Membership not found' });
+        }
+
+        // Respond with the user's role in the group
+        res.json({ success: true, role: membership.title });
+    } catch (error) {
+        console.error('Error fetching user role:', error);
+        res.status(500).json({ success: false, message: 'Failed to retrieve user role' });
+    }
+};
 
 

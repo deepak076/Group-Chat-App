@@ -10,4 +10,5 @@ router.post('/login', userController.login);
 router.get('/details', authMiddleware.authenticate, userController.getUserDetails);
 router.get('/all', authMiddleware.authenticate, userController.getAllUsers);
 
+
 module.exports = router;
