@@ -203,6 +203,45 @@ exports.addUserToGroup = async (req, res) => {
     }
 };
 
+exports.removeUserFromGroup = async (req, res) => {
+    try {
+        const { groupId } = req.params; // Extract groupId from request parameters
+        const { username } = req.body; // Extract username from request body
+
+        // Find the user by username
+        const user = await User.findOne({ where: { name: username } });
+
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'User not found' });
+        }
+
+        // Check if the user is a member of the group
+        const existingMembership = await GroupMembership.findOne({
+            where: {
+                userId: user.id,
+                groupId: groupId
+            }
+        });
+
+        if (!existingMembership) {
+            return res.status(400).json({ success: false, message: 'User is not a member of the group' });
+        }
+
+        // Remove the user from the group
+        await GroupMembership.destroy({
+            where: {
+                userId: user.id,
+                groupId: groupId
+            }
+        });
+
+        res.json({ success: true, message: 'User removed from group successfully' });
+    } catch (error) {
+        console.error('Error removing user from group:', error);
+        res.status(500).json({ success: false, message: 'Failed to remove user from group' });
+    }
+};
+
 exports.makeUserAdmin = async (req, res) => {
     try {
         const { groupId } = req.params; // Extract groupId from request parameters

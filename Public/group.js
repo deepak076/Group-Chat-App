@@ -130,6 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Show the "Add User" button
             document.getElementById('add-user-btn').style.display = 'block';
             document.getElementById('makeAdmin-btn').style.display = 'block';
+            document.getElementById('remove-user-btn').style.display = 'block';
           }
         })
         .catch(error => console.error('Error fetching user role:', error));
@@ -384,6 +385,60 @@ document.addEventListener('DOMContentLoaded', () => {
       .catch(error => {
         console.error('Error promoting user to admin:', error);
         alert('Error promoting user to admin: ' + error.message);
+      });
+  }
+
+  const removeUserBtn = document.getElementById('remove-user-btn');
+  const removeUserForm = document.getElementById('remove-user-form');
+
+  removeUserBtn.addEventListener('click', () => {
+    // Toggle visibility
+    removeUserForm.classList.toggle('hidden');
+  });
+
+  // Handle the form submission
+  removeUserForm.addEventListener('submit', (event) => {
+    event.preventDefault(); // Prevent the form from submitting traditionally
+    const username = document.getElementById('username-input3').value;
+
+    // Assume a function to handle the API call for adding a user
+    removeUser(username);
+  });
+
+  function removeUser(username) {
+    console.log('Adding user:', username);
+    const groupId = getCurrentGroupId(); // Get the current group ID from the UI context or storage
+    if (!groupId) {
+      alert('No group selected');
+      return;
+    }
+
+    fetch(`http://localhost:3000/group/remove-user/${groupId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': token
+      },
+      body: JSON.stringify({ username: username, groupId: groupId })
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok.');
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (data.success) {
+          console.log('User removed successfully:', data);
+          alert('User removed successfully!');
+          // Optionally, refresh the group members list or UI
+        } else {
+          throw new Error(data.message || 'Failed to remove user');
+        }
+      })
+      .catch(error => {
+        console.error('Error removing user:', error);
+        alert('Error removing user: ' + error.message);
       });
   }
 

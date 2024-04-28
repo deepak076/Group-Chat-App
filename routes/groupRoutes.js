@@ -8,6 +8,7 @@ const groupController = require('../controllers/groupController');
 router.post('/create-group', authMiddleware.authenticate, groupController.createGroup);
 router.post('/add-members', authMiddleware.authenticate, groupController.addMembersToGroup);
 router.post('/add-user/:groupId', authMiddleware.authenticate, groupController.addUserToGroup); // Route for adding a user to a group
+router.post('/remove-user/:groupId', authMiddleware.authenticate, groupController.removeUserFromGroup); // Route for removing a user from a group
 router.post('/make-admin/:groupId', authMiddleware.authenticate, groupController.makeUserAdmin); // Route for promoting a user to admin in a group
 
 // Group data retrieval

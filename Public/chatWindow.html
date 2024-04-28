@@ -1,74 +1,81 @@
-  <!-- Public\chatWindow.html -->
-  <!DOCTYPE html>
-  <html lang="en">
+<!-- Public\chatWindow.html -->
+<!DOCTYPE html>
+<html lang="en">
 
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="chatStyle.css">
-    <title>Chat Window</title>
-  </head>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="chatStyle.css">
+  <title>Chat Window</title>
+</head>
 
-  <body>
+<body>
 
-    <div id="sidebar">
-      <button id="create-group-btn">Create Group</button>
-      <br>
-      <button id="common-chat-btn">Common Chat</button>
+  <div id="sidebar">
+    <button id="create-group-btn">Create Group</button>
+    <br>
+    <button id="common-chat-btn">Common Chat</button>
 
-      <div id="user-groups">
-        <h3>My Groups</h3>
-        <ul id="group-list"></ul>
+    <div id="user-groups">
+      <h3>My Groups</h3>
+      <ul id="group-list"></ul>
+    </div>
+
+    <div id="groupChat-container" class="hidden">
+      <div id="group-chat-name">Group Name Here</div>
+      <div id="groupChat-history"></div>
+      <button id="add-user-btn">Add User</button>
+      <form id="add-user-form" class="hidden">
+        <label for="username-input1">Enter Username to add:</label>
+        <input type="text" id="username-input1" name="username-input1">
+        <button type="submit">Add</button>
+      </form>
+      <button id="makeAdmin-btn">Make Admin</button>
+      <form id="makeAdmin-form" class="hidden">
+        <label for="username-input2">Enter Username to promote:</label>
+        <input type="text" id="username-input2" name="username-input2">
+        <button type="submit">Make</button>
+      </form>
+      <button id="remove-user-btn">Remove User</button>
+      <form id="remove-user-form" class="hidden">
+        <label for="username-input3">Enter Username to remove:</label>
+        <input type="text" id="username-input3" name="username-input3">
+        <button type="submit">Remove</button>
+      </form>
+
+      <button id="close-groupChat-btn">Close Chat</button>
+      <div id="group-input-container">
+        <input type="text" id="group-message-input" placeholder="Type your message...">
+        <button id="groupSend-button">Send</button>
       </div>
+    </div>
 
-      <div id="groupChat-container" class="hidden">
-        <div id="group-chat-name">Group Name Here</div>
-        <div id="groupChat-history"></div>
-        <button id="add-user-btn">Add User</button>
-        <form id="add-user-form" class="hidden">
-          <label for="username-input1">Enter Username to add:</label>
-          <input type="text" id="username-input1" name="username-input1">
-          <button type="submit">Add</button>
-        </form>
-        <button id="makeAdmin-btn">Make Admin</button>
-        <form id="makeAdmin-form" class="hidden">
-          <label for="username-input2">Enter Username to promote:</label>
-          <input type="text" id="username-input2" name="username-input2">
-          <button type="submit">Make</button>
-        </form>
-        <button id="close-groupChat-btn">Close Chat</button>
-        <div id="group-input-container">
-          <input type="text" id="group-message-input" placeholder="Type your message...">
-          <button id="groupSend-button">Send</button>
-        </div>
+
+    <div id="create-group-form" class="hidden">
+      <h2>Create Group</h2>
+      <form id="group-form">
+        <label for="group-name-input">Group Name:</label>
+        <input type="text" id="group-name-input" name="group-name-input">
+        <br>
+        <label for="members-input">Members (comma-separated):</label>
+        <input type="text" id="members-input" name="members-input">
+        <br>
+        <button type="submit">Create</button>
+      </form>
+    </div>
+
+    <div id="chat-container" class="hidden">
+      <div id="join-message"></div>
+      <div id="chat-history"></div>
+      <button id="close-chat-btn">Close Chat</button>
+      <div id="input-container">
+        <input type="text" id="message-input" placeholder="Type your message...">
+        <button id="send-button">Send</button>
       </div>
+    </div>
 
+    <script src="chat.js"></script>
+    <script src="group.js"></script>
+</body>
 
-      <div id="create-group-form" class="hidden">
-        <h2>Create Group</h2>
-        <form id="group-form">
-          <label for="group-name-input">Group Name:</label>
-          <input type="text" id="group-name-input" name="group-name-input">
-          <br>
-          <label for="members-input">Members (comma-separated):</label>
-          <input type="text" id="members-input" name="members-input">
-          <br>
-          <button type="submit">Create</button>
-        </form>
-      </div>
-
-      <div id="chat-container" class="hidden">
-        <div id="join-message"></div>
-        <div id="chat-history"></div>
-        <button id="close-chat-btn">Close Chat</button>
-        <div id="input-container">
-          <input type="text" id="message-input" placeholder="Type your message...">
-          <button id="send-button">Send</button>
-        </div>
-      </div>
-
-      <script src="chat.js"></script>
-      <script src="group.js"></script>
-  </body>
-
-  </html>
+</html>

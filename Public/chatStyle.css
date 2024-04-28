@@ -96,6 +96,12 @@ body {
   bottom: 10px;
   right: 85px;
 }
+#remove-user-btn {
+  display: none;
+  position: absolute;
+  bottom: 10px;
+  right: 178px;
+}
 
 .hidden {
   display: none;
