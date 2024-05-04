@@ -204,7 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     fetchAllData(); // Call this once to fetch initial data
 
-    // setInterval(() => {
-    //     fetchAllMessages();
-    // }, 1000);
+    setInterval(() => {
+        fetchAllMessages();
+    }, 1000);
 });

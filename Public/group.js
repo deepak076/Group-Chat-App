@@ -36,6 +36,7 @@ function createGroup(groupName, members) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      'Authorization': token
     },
     body: JSON.stringify({ userId: userId, groupName: groupName, members: members })
   })
@@ -274,9 +275,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   fetchAllMessages();
 
-  // setInterval(() => {
-  //     fetchAllMessages();
-  // }, 1000);
+  setInterval(() => {
+      fetchAllMessages();
+  }, 1000);
 
 
   const addUserBtn = document.getElementById('add-user-btn');

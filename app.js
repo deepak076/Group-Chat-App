@@ -12,9 +12,11 @@ const GroupMessage = require('./models/groupMessage');
 const userRoutes = require('./routes/userRoutes');
 const chatRoutes = require('./routes/chatRoutes');
 const groupRoutes = require('./routes/groupRoutes');
-require('dotenv').config();
 
 const app = express();
+const dotenv= require('dotenv');    
+dotenv.config();
+
 const port = 3000;
 
 app.use(cors());
