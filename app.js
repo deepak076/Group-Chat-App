@@ -1,11 +1,11 @@
 // app.js
 const express = require('express');
 const bodyParser = require('body-parser');
-const cors = require('cors'); 
+const cors = require('cors');
 const path = require('path');
 const sequelize = require('./util/db');
 const User = require('./models/user');
-const ChatMessage = require('./models/chatMessage'); 
+const ChatMessage = require('./models/chatMessage');
 const Group = require('./models/group');
 const GroupMembership = require('./models/groupMembership');
 const GroupMessage = require('./models/groupMessage');
@@ -14,7 +14,7 @@ const chatRoutes = require('./routes/chatRoutes');
 const groupRoutes = require('./routes/groupRoutes');
 
 const app = express();
-const dotenv= require('dotenv');    
+const dotenv = require('dotenv');
 dotenv.config();
 
 const port = 3000;
@@ -31,7 +31,11 @@ sequelize.sync({ force: false })
 
 app.use(bodyParser.json());
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'Public')));
+
+app.get('/check', (req, res) => {
+    console.log("backend is working");
+});
 
 app.use('/user', userRoutes);
 app.use('/chat', chatRoutes);
