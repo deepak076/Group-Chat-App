@@ -1,4 +1,3 @@
-// app.js
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -12,12 +11,14 @@ const GroupMessage = require('./models/groupMessage');
 const userRoutes = require('./routes/userRoutes');
 const chatRoutes = require('./routes/chatRoutes');
 const groupRoutes = require('./routes/groupRoutes');
+const http = require('http'); // Import http module
+const socketIo = require('socket.io');
 
 const app = express();
 const dotenv = require('dotenv');
 dotenv.config();
 
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 app.use(cors());
 
@@ -48,6 +49,27 @@ Group.belongsToMany(User, { through: GroupMembership });
 GroupMessage.belongsTo(User, { foreignKey: 'userId' });
 GroupMessage.belongsTo(Group, { foreignKey: 'groupId' });
 
-app.listen(port, () => {
+// Create HTTP server
+const server = http.createServer(app);
+
+// Create Socket.IO server
+const io = socketIo(server);
+
+// Socket.IO event handlers
+io.on('connection', socket => {
+    console.log('New client connected');
+
+    // Handle chat message event
+    socket.on('chatMessage', ({ userName, message }) => {
+        // Broadcast the message to all clients
+        io.emit('message', { userName, message });
+    });
+
+    socket.on('disconnect', () => {
+        console.log('Client disconnected');
+    });
+});
+
+server.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
 });

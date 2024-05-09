@@ -445,7 +445,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 });
 
-
 // Function to fetch user role from the server
 async function fetchUserRole(token, groupId) {
   try {
@@ -473,5 +472,4 @@ function displayGroupChatContainer(container, groupName) {
     groupNameElement.textContent = groupName;
   }
   container.classList.remove('hidden'); // Remove the 'hidden' class to display the group chat container
-}
-
+} 
