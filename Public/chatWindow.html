@@ -71,8 +71,16 @@
       <div id="chat-history"></div>
       <button id="close-chat-btn">Close Chat</button>
       <div id="input-container">
-        <input type="text" id="message-input" placeholder="Type your message...">
-        <button id="send-button">Send</button>
+        <div id="text-input" class="input-mode">
+          <input type="text" id="message-input" placeholder="Type your message...">
+          <button id="send-button">Send</button>
+        </div>
+        <div id="multimedia-input" class="input-mode hidden">
+          <input type="file" id="file-input" name="file" accept="image/*, video/*, .pdf, .doc, .docx">  
+          <button id="send-file-button">Send File</button>
+        </div>
+        <button id="input-mode-switch">Switch to Multimedia</button>
+
       </div>
     </div>
 

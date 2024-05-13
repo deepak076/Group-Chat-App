@@ -275,9 +275,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   fetchAllMessages();
 
-  setInterval(() => {
-      fetchAllMessages();
-  }, 1000);
+  // setInterval(() => {
+  //     fetchAllMessages();
+  // }, 1000);
 
 
   const addUserBtn = document.getElementById('add-user-btn');
@@ -442,7 +442,6 @@ document.addEventListener('DOMContentLoaded', () => {
         alert('Error removing user: ' + error.message);
       });
   }
-
 });
 
 // Function to fetch user role from the server
@@ -473,3 +472,6 @@ function displayGroupChatContainer(container, groupName) {
   }
   container.classList.remove('hidden'); // Remove the 'hidden' class to display the group chat container
 } 
+
+
+

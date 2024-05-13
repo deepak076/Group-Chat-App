@@ -65,6 +65,12 @@ io.on('connection', socket => {
         io.emit('message', { userName, message });
     });
 
+     // Handle file message event
+     socket.on('fileMessage', ({ userName, message }) => {
+        // Broadcast the file message to all clients
+        io.emit('fileMessage', { userName, message });
+    });
+
     socket.on('disconnect', () => {
         console.log('Client disconnected');
     });

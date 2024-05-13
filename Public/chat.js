@@ -85,6 +85,16 @@ document.addEventListener('DOMContentLoaded', () => {
         displayMessage(userName, message);
     });
 
+    // Receive file message from server
+    socket.on('fileMessage', ({ userName, message }) => {
+        // Create a new image element
+        const imageElement = document.createElement('img');
+        imageElement.src = message; // Set the image source to the received URL
+        imageElement.alt = `${userName}'s Image`; // Set alt text for accessibility
+        // Append the image to the chat history
+        chatHistory.appendChild(imageElement);
+    });
+
     function fetchAllUsers() {
         fetch('http://localhost:3000/user/all', {
             method: 'GET',
@@ -114,4 +124,63 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     fetchAllData(); // Call this once to fetch initial data
+
+
+    const textInput = document.getElementById('text-input');
+    const multimediaInput = document.getElementById('multimedia-input');
+    const inputModeSwitch = document.getElementById('input-mode-switch');
+
+    inputModeSwitch.addEventListener('click', () => {
+        textInput.classList.toggle('hidden');
+        multimediaInput.classList.toggle('hidden');
+
+        if (textInput.classList.contains('hidden')) {
+            inputModeSwitch.textContent = 'Switch to Text';
+        } else {
+            inputModeSwitch.textContent = 'Switch to Multimedia';
+        }
+    });
+
+    const sendFileButton = document.getElementById('send-file-button');
+
+    sendFileButton.addEventListener('click', async () => {
+        const fileInput = document.getElementById('file-input');
+        const file = fileInput.files[0];
+
+        if (file) {
+            try {
+                // Upload the file to the server
+                const formData = new FormData();
+                formData.append('imageFile', file);
+
+                console.log(formData); // Log the FormData object before sending the request
+
+                const response = await fetch('http://localhost:3000/chat/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                console.log(response); // Log the response from the server
+
+                if (!response.ok) {
+                    throw new Error('Failed to upload file to server.');
+                }
+
+                // Get the URL of the uploaded file from the response
+                const fileUrl = await response.text();
+
+                // Send the file URL to the server as a message
+                socket.emit('fileMessage', { userName: username, message: fileUrl });
+
+                // Clear the file input
+                fileInput.value = '';
+
+            } catch (error) {
+                console.error('Error uploading file:', error);
+            }
+        } else {
+            console.error('No file selected.');
+        }
+    });
+
 });
