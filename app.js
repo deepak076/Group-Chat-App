@@ -8,11 +8,14 @@ const ChatMessage = require('./models/chatMessage');
 const Group = require('./models/group');
 const GroupMembership = require('./models/groupMembership');
 const GroupMessage = require('./models/groupMessage');
+const ArchivedChat = require('./models/ArchivedChat');
 const userRoutes = require('./routes/userRoutes');
 const chatRoutes = require('./routes/chatRoutes');
 const groupRoutes = require('./routes/groupRoutes');
 const http = require('http'); // Import http module
 const socketIo = require('socket.io');
+
+const cronJob = require('./services/cronjob'); // Import the cron job service
 
 const app = express();
 const dotenv = require('dotenv');
@@ -65,8 +68,8 @@ io.on('connection', socket => {
         io.emit('message', { userName, message });
     });
 
-     // Handle file message event
-     socket.on('fileMessage', ({ userName, message }) => {
+    // Handle file message event
+    socket.on('fileMessage', ({ userName, message }) => {
         // Broadcast the file message to all clients
         io.emit('fileMessage', { userName, message });
     });
@@ -79,3 +82,6 @@ io.on('connection', socket => {
 server.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
 });
+
+// Start the cron job
+cronJob.job.start();
